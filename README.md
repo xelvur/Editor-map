@@ -21,9 +21,9 @@ Thanks to tela for the logo design, and solly for svg <3
 
 | Задача | Статус |
 | ------ | ------ |
-| zoom | <input type="checkbox" checked> |
-| tollbar | <input type="checkbox"> |
-| update ui | <input type="checkbox" disabled> |
+| zoom | ✅ |
+| tollbar | ✅ |
+| update ui | ❎ |
 
 ### Installation
 
