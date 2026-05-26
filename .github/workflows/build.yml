@@ -1,0 +1,144 @@
+name: Build Android
+
+on:
+  push:
+    branches-ignore:
+      - gh-readonly-queue/**
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job 1: Build pre-compiled Android libraries (SDL2, Freetype, Ogg, etc.)
+  # Results are cached — only rebuilds when scripts/compile_libs changes.
+  # ─────────────────────────────────────────────────────────────────────────────
+  build-android-libs:
+    runs-on: ubuntu-24.04
+    outputs:
+      cache-hit: ${{ steps.cache-libs.outputs.cache-hit }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Fix script permissions
+      run: chmod +x scripts/android/*.sh scripts/compile_libs/*.sh || true
+
+    - name: Compute libs cache key
+      id: libs-key
+      run: |
+        KEY=$(find scripts/compile_libs -type f | sort | xargs sha256sum | sha256sum | cut -d' ' -f1)
+        echo "key=android-libs-$KEY" >> $GITHUB_OUTPUT
+
+    - name: Restore cached ddnet-libs
+      id: cache-libs
+      uses: actions/cache@v4
+      with:
+        path: ddnet-libs
+        key: ${{ steps.libs-key.outputs.key }}
+
+    - name: Install build dependencies
+      if: steps.cache-libs.outputs.cache-hit != 'true'
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install -y autoconf automake cmake libtool m4 ninja-build
+        scripts/android/download_android_sdk.sh /home/runner
+
+    - name: Build Android libraries
+      if: steps.cache-libs.outputs.cache-hit != 'true'
+      run: |
+        export ANDROID_HOME="/home/runner/Android/Sdk"
+        unset ANDROID_SDK_ROOT
+        export M4=/usr/bin/m4
+        chmod +x scripts/compile_libs/gen_libs.sh
+        scripts/compile_libs/gen_libs.sh build-android-libs android
+        # Merge built libs into ddnet-libs/
+        find build-android-libs/ddnet-libs -type d -name android -exec rm -r {} + -prune 2>/dev/null || true
+        rm -rf build-android-libs/ddnet-libs/sdl/java 2>/dev/null || true
+        mkdir -p ddnet-libs
+        cp -r build-android-libs/ddnet-libs/. ddnet-libs/
+
+    - name: Upload ddnet-libs artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ddnet-libs-android
+        path: ddnet-libs
+        retention-days: 7
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job 2: Build the Xelnet APK using the pre-built libraries
+  # ─────────────────────────────────────────────────────────────────────────────
+  build-android:
+    runs-on: ubuntu-24.04
+    needs: build-android-libs
+    env:
+      CARGO_HTTP_MULTIPLEXING: false
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Validate Gradle Wrapper
+      uses: gradle/actions/wrapper-validation@v4
+
+    - name: Fix script permissions
+      run: chmod +x scripts/android/*.sh scripts/compile_libs/*.sh || true
+
+    - name: Download ddnet-libs
+      uses: actions/download-artifact@v4
+      with:
+        name: ddnet-libs-android
+        path: ddnet-libs
+
+    - name: Prepare Linux
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install -y ninja-build openjdk-21-jdk openssl
+        curl -LO https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-Linux-x86_64.tar.gz
+        mkdir -p /home/runner/cmake
+        tar --strip-components 1 -C /home/runner/cmake -xf cmake-3.22.1-Linux-x86_64.tar.gz
+        rustup default 1.92.0
+        cargo install cargo-ndk
+        rustup target add armv7-linux-androideabi
+        rustup target add i686-linux-android
+        rustup target add aarch64-linux-android
+        rustup target add x86_64-linux-android
+        scripts/android/download_android_sdk.sh /home/runner
+
+    - name: Install Vulkan SDK
+      uses: humbletim/install-vulkan-sdk@v1.2
+      with:
+        version: 1.3.296.0
+        cache: true
+
+    - name: Cache Rust dependencies
+      uses: Swatinem/rust-cache@v2
+      with:
+        workspaces: |
+          src/mastersrv
+          src/masterping
+          ./
+
+    - name: Build Android app
+      env:
+        TW_KEY_NAME: /home/runner/DDNet.jks
+        TW_KEY_ALIAS: DDNet-Key
+      run: |
+        chmod +x scripts/android/cmake_android.sh
+        export TW_KEY_PW="$(openssl rand -base64 32)"
+        keytool -genkey -v -keystore "$TW_KEY_NAME" -keyalg RSA -keysize 2048 -validity 10000 \
+          -alias "$TW_KEY_ALIAS" -storepass "$TW_KEY_PW" \
+          -dname "CN=Xelnet CI, OU=Xelnet, O=Xelnet"
+        export ANDROID_HOME="/home/runner/Android/Sdk"
+        unset ANDROID_SDK_ROOT
+        export PATH=/home/runner/cmake/bin:$PATH
+        scripts/android/cmake_android.sh all Xelnet org.xelnet.client Release build-android
+        mkdir artifacts
+        mv build-android/DDNet.apk artifacts/Xelnet.apk
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: xelnet-android
+        path: artifacts/Xelnet.apk
+        retention-days: 30
