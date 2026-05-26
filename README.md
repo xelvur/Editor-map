@@ -17,6 +17,12 @@ Thanks to tela for the logo design, and solly for svg <3
 [Discord](https://discord.gg/BgPSapKRkZ)
 [Website](https://tclient.app)
 
+###Checkbox
+
+-[x] зум/перемещение пальцами
+-[] туллбар быстрых действий
+-[] полная замена UI
+
 ### Installation
 
 * Download the latest [release](https://github.com/sjrc6/TaterClient-ddnet/releases)
