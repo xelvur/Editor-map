@@ -5,7 +5,7 @@
 #include <base/system.h>
 
 //simulate key import sdl2
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 #include <engine/client.h>
 #include <engine/console.h>
