@@ -1,0 +1,359 @@
+{
+	"direct-touch-ingame": "disabled",
+	"direct-touch-spectate": "aim",
+	"background-color-inactive": "00000040",
+	"background-color-active": "33333340",
+	"touch-buttons": [
+		{
+			"x": 0,
+			"y": 770034,
+			"w": 261622,
+			"h": 229966,
+			"shape": "rect",
+			"visibilities": [
+				"ingame",
+				"-demo-player"
+			],
+			"behavior": {
+				"type": "bind",
+				"label": "Move left",
+				"label-type": "localized",
+				"command": "+left"
+			}
+		},
+		{
+			"x": 261622,
+			"y": 769821,
+			"w": 254065,
+			"h": 230174,
+			"shape": "rect",
+			"visibilities": [
+				"ingame",
+				"-demo-player"
+			],
+			"behavior": {
+				"type": "bind",
+				"label": "Move right",
+				"label-type": "localized",
+				"command": "+right"
+			}
+		},
+		{
+			"x": 85750,
+			"y": 157406,
+			"w": 288243,
+			"h": 267129,
+			"shape": "rect",
+			"visibilities": [
+				"ingame",
+				"-demo-player"
+			],
+			"behavior": {
+				"type": "bind",
+				"label": "Jump",
+				"label-type": "localized",
+				"command": "+jump"
+			}
+		},
+		{
+			"x": 119900,
+			"y": 0,
+			"w": 254093,
+			"h": 157406,
+			"shape": "rect",
+			"visibilities": [
+				"ingame",
+				"-demo-player"
+			],
+			"behavior": {
+				"type": "bind",
+				"label": "Next weapon",
+				"label-type": "localized",
+				"command": "+nextweapon"
+			}
+		},
+		{
+			"x": 0,
+			"y": 0,
+			"w": 119900,
+			"h": 157406,
+			"shape": "rect",
+			"visibilities": [
+				"-demo-player"
+			],
+			"behavior": {
+				"type": "predefined",
+				"id": "extra-menu",
+				"number": 1
+			}
+		},
+		{
+			"x": 706749,
+			"y": 362962,
+			"w": 106314,
+			"h": 137038,
+			"shape": "rect",
+			"visibilities": [
+				"zoom-allowed",
+				"-demo-player",
+				"extra-menu"
+			],
+			"behavior": {
+				"type": "bind",
+				"label": "Zoom out",
+				"label-type": "localized",
+				"command": "zoom-"
+			}
+		},
+		{
+			"x": 813063,
+			"y": 362962,
+			"w": 82519,
+			"h": 137038,
+			"shape": "rect",
+			"visibilities": [
+				"zoom-allowed",
+				"-demo-player",
+				"extra-menu"
+			],
+			"behavior": {
+				"type": "bind",
+				"label": "Default zoom",
+				"label-type": "localized",
+				"command": "zoom"
+			}
+		},
+		{
+			"x": 895582,
+			"y": 362962,
+			"w": 104418,
+			"h": 137038,
+			"shape": "rect",
+			"visibilities": [
+				"zoom-allowed",
+				"-demo-player",
+				"extra-menu"
+			],
+			"behavior": {
+				"type": "bind",
+				"label": "Zoom in",
+				"label-type": "localized",
+				"command": "zoom+"
+			}
+		},
+		{
+			"x": 0,
+			"y": 162943,
+			"w": 85750,
+			"h": 96296,
+			"shape": "rect",
+			"visibilities": [
+				"-demo-player",
+				"extra-menu"
+			],
+			"behavior": {
+				"type": "bind",
+				"label": "Scoreboard",
+				"label-type": "localized",
+				"command": "+scoreboard"
+			}
+		},
+		{
+			"x": 0,
+			"y": 264760,
+			"w": 85750,
+			"h": 97222,
+			"shape": "rect",
+			"visibilities": [
+				"ingame",
+				"-demo-player",
+				"extra-menu"
+			],
+			"behavior": {
+				"type": "predefined",
+				"id": "emoticon"
+			}
+		},
+		{
+			"x": 116667,
+			"y": 133333,
+			"w": 83333,
+			"h": 66667,
+			"shape": "rect",
+			"visibilities": [
+				"-ingame",
+				"extra-menu"
+			],
+			"behavior": {
+				"type": "predefined",
+				"id": "spectate"
+			}
+		},
+		{
+			"x": 85879,
+			"y": 617078,
+			"w": 87479,
+			"h": 125462,
+			"shape": "rect",
+			"visibilities": [
+				"-demo-player",
+				"extra-menu"
+			],
+			"behavior": {
+				"type": "bind",
+				"label": "Chat",
+				"label-type": "localized",
+				"command": "chat all"
+			}
+		},
+		{
+			"x": 378795,
+			"y": 384164,
+			"w": 86788,
+			"h": 173524,
+			"shape": "rect",
+			"visibilities": [
+				"-demo-player",
+				"extra-menu"
+			],
+			"behavior": {
+				"type": "bind",
+				"label": "Team chat",
+				"label-type": "localized",
+				"command": "chat team"
+			}
+		},
+		{
+			"x": 467724,
+			"y": 140359,
+			"w": 79733,
+			"h": 177003,
+			"shape": "rect",
+			"visibilities": [
+				"vote-active",
+				"-demo-player",
+				"extra-menu"
+			],
+			"behavior": {
+				"type": "bind",
+				"label": "Vote yes",
+				"label-type": "localized",
+				"command": "vote yes"
+			}
+		},
+		{
+			"x": 373993,
+			"y": 142128,
+			"w": 93731,
+			"h": 176626,
+			"shape": "rect",
+			"visibilities": [
+				"vote-active",
+				"-demo-player",
+				"extra-menu"
+			],
+			"behavior": {
+				"type": "bind",
+				"label": "Vote no",
+				"label-type": "localized",
+				"command": "vote no"
+			}
+		},
+		{
+			"x": 373993,
+			"y": 0,
+			"w": 93731,
+			"h": 142128,
+			"shape": "rect",
+			"visibilities": [
+				"dummy-connected",
+				"-demo-player"
+			],
+			"behavior": {
+				"type": "bind",
+				"label": "Toggle dummy",
+				"label-type": "localized",
+				"command": "toggle cl_dummy 0 1"
+			}
+		},
+		{
+			"x": 547390,
+			"y": 500000,
+			"w": 452610,
+			"h": 500000,
+			"shape": "rect",
+			"visibilities": [
+				"ingame",
+				"-demo-player"
+			],
+			"behavior": {
+				"type": "predefined",
+				"id": "joystick-aim"
+			}
+		},
+		{
+			"x": 177797,
+			"y": 424535,
+			"w": 196746,
+			"h": 317570,
+			"shape": "rect",
+			"visibilities": [
+				"-demo-player"
+			],
+			"behavior": {
+				"type": "bind",
+				"label": "fire",
+				"label-type": "localized",
+				"command": "+fire"
+			}
+		},
+		{
+			"x": 547457,
+			"y": 926,
+			"w": 452543,
+			"h": 362036,
+			"shape": "rect",
+			"visibilities": [
+				"-demo-player"
+			],
+			"behavior": {
+				"type": "bind",
+				"label": "hook",
+				"label-type": "localized",
+				"command": "+hook"
+			}
+		},
+		{
+			"x": 85807,
+			"y": 431928,
+			"w": 88098,
+			"h": 174519,
+			"shape": "rect",
+			"visibilities": [
+				"-demo-player"
+			],
+			"behavior": {
+				"type": "bind",
+				"label": "kill",
+				"label-type": "localized",
+				"command": "kill"
+			}
+		},
+		{
+			"x": 378126,
+			"y": 564835,
+			"w": 87021,
+			"h": 177069,
+			"shape": "rect",
+			"visibilities": [
+				"-demo-player"
+			],
+			"behavior": {
+				"type": "bind",
+				"label": "spec",
+				"label-type": "localized",
+				"command": "say \"/spec\""
+			}
+		}
+	]
+}
